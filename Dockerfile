@@ -1,10 +1,9 @@
 FROM quay.io/pires/docker-jre:8u171_alpine_3.8.1
-MAINTAINER pjpires@gmail.com
 
 # Export HTTP & Transport
 EXPOSE 9200 9300
 
-ENV ES_VERSION 6.4.2
+ENV ES_VERSION 6.2.4
 
 ENV DOWNLOAD_URL "https://artifacts.elastic.co/downloads/elasticsearch"
 ENV ES_TARBAL "${DOWNLOAD_URL}/elasticsearch-${ES_VERSION}.tar.gz"
@@ -42,6 +41,7 @@ COPY config /elasticsearch/config
 
 # Copy run script
 COPY run.sh /
+COPY elasticsearch-analysis-vietnamese.zip /
 
 # Set environment variables defaults
 ENV ES_JAVA_OPTS "-Xms512m -Xmx512m"
@@ -59,6 +59,7 @@ ENV SHARD_ALLOCATION_AWARENESS ""
 ENV SHARD_ALLOCATION_AWARENESS_ATTR ""
 ENV MEMORY_LOCK true
 ENV REPO_LOCATIONS ""
+ENV ES_PLUGINS_INSTALL="analysis-icu,file:///elasticsearch-analysis-vietnamese.zip"
 
 # Volume for Elasticsearch data
 VOLUME ["/data"]
